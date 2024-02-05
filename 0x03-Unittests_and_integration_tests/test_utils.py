@@ -1,19 +1,20 @@
-#!usr/bin/env python3
-"""A module for testing utils module"""
-
+#!/usr/bin/env python3
+"""A module for testing the utils module.
+"""
 import unittest
-from parameterized import parameterized
 from typing import Dict, Tuple, Union
 from unittest.mock import patch, Mock
+from parameterized import parameterized
 
 from utils import (
-        access_nested_map,
-        get_json,
-        memoize,
+    access_nested_map,
+    get_json,
+    memoize,
 )
 
+
 class TestAccessNestedMap(unittest.TestCase):
-    """tests the access_nested_map function"""
+    """Tests the `access_nested_map` function."""
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -25,20 +26,19 @@ class TestAccessNestedMap(unittest.TestCase):
             path: Tuple[str],
             expected: Union[Dict, int],
             ) -> None:
-        """tests access nested map output"""
+        """Tests `access_nested_map`'s output."""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
         ({}, ("a",), KeyError),
-        ({"a": 1} ("a", "b"), KeyError),
-        ])
-
+        ({"a": 1}, ("a", "b"), KeyError),
+    ])
     def test_access_nested_map_exception(
             self,
             nested_map: Dict,
             path: Tuple[str],
-            exception; Exception,
+            exception: Exception,
             ) -> None:
-        """Tests access_nested_map exception raising"""
+        """Tests `access_nested_map`'s exception raising."""
         with self.assertRaises(exception):
-            acccess_nested_map(nested_map, path)
+            access_nested_map(nested_map, path)
