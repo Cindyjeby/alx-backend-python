@@ -3,17 +3,32 @@
 
 import unittest
 from parameterized import parameterized
-from your_module import utils  # Replace 'your_module' with the actual module name
+from typing import Dict, Tuple, Union
+from unittest.mock import patch, Mock
 
-class TestAccessNestedMap(unittest.TestCase):
+from utils import (
+        access_nested_map,
+        get_json,
+        memoize,
+)
 
+class sNestedMap(unittest.TestCase):
+    """tests the access_nested_map function"""
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2),
     ])
-    def test_access_nested_map(self, nested_map, path, expected_result):
-        self.assertEqual(utils.access_nested_map(nested_map, path), expected_result)
+    def test_access_nested_map(
+            self,
+            nested_map: Dict,
+            path: Tuple[str],
+            expected: Union[Dict, int],
+            ) -> None:
+        """tests access nested map output"""
+        self.assertEqual(access_nested_map(nested_map, path), expected)
 
-if __name__ == "__main__":
-    unittest.main()
+    @parameterized.expand([
+        ({}, ("a",), KeyError),
+        ({"a": 1} ("a", "b"), KeyError),
+        ])
